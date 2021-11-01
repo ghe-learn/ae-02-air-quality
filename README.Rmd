@@ -6,20 +6,22 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 
 ```{r load-libraries, echo=FALSE}
 
+# This code loads some R Packages that do come with R
+# These packages are extensions to the original R language
+
 library(readr)
 library(ggplot2)
 library(dplyr)
-library(DT)
 library(lubridate)
 
 ```
 
-This exercise is part of workshops, and undergraduate and graduate courses taught by the Global Health Engineering Group at ETH Zurich. 
+This exercise is part of workshops, and undergraduate and graduate courses taught by the Global Health Engineering Group at ETH Zurich.
 
 # Data
 
@@ -48,7 +50,7 @@ vec_hospital_name <- dat_in %>%
 
 ```
 
-The data used in this exercise comes from a study implemented by researchers of the Global Health Engineering Group. The data is published openly on GitHub (Authors, 2021). Air quality data (PM2.5 and PM10) was collected in roughly 5-minute intervals from eight locations at one hospital in Malawi over the period of 3 months. The locations are `r knitr::combine_words(vec_hospital_name)`.
+The data used in this exercise comes from a study implemented by researchers of the Global Health Engineering Group. The data is published openly on GitHub (Authors, 2021). Air quality data (PM2.5 and PM10) was collected in roughly 5-minute intervals from eight locations at one hospital in Malawi over the period of 3 months. The locations are 6B, Administration, guardian, Lhouse, Lions, Malaria, MJC.
 
 The data has six variables (columns) and 200'000 rows (observations/measurements). The following table describes each variable:
 
@@ -62,9 +64,16 @@ The data has six variables (columns) and 200'000 rows (observations/measurements
 
 # Data transformation
 
+## Exercise 1: Learn to read code
+
+1.  Read the code below and try to describe with your own words what you think is happening here.
+
+**Add your text here**
+
 ```{r transform-summary}
 
 dat_in_sum_day <- dat_in %>% 
+  filter(value <= 1000) %>% 
   mutate(date = as_date(date_time)) %>% 
   group_by(date, location, indicator) %>% 
   summarise(min = min(value),
@@ -78,22 +87,32 @@ dat_in_sum_day <- dat_in %>%
 
 # Data visualisation
 
+## Exercise 2: Learn to identify elements of a plot
+
+1.  Run the code in the Code-chunk below (**Tipp:** Click on the green play button in the top right corner of the code-chunk) .
+
+2.  Look at the plot that opens in the 'Plots' pane in the bottom right window and identify how the code relates to the plot.
+
+    -   What is in the code that shows up in the plot?
+
+3.  If you feel adventurous, change the value inside the function `geom_point()` to a different value (e.g. 0.1, 5, 10) and run the code again.
+
 ```{r plot-daily-avg, fig.cap="Figure caption me!", fig.height=18, fig.width=10}
-dat_in_sum_day %>% 
-  ggplot(aes(x = date, y = mean, group = indicator, color = indicator)) +
+
+ggplot(data = dat_in_sum_day,
+       mapping = aes(x = date, 
+                     y = mean, 
+                     color = indicator)) +
   geom_point(size = 0.6) +
   geom_line() +
   labs(title = "Hospital Air Quality",
-       subtitle = "Average 24-hour PM2.5 and PM10 concentrations at eight locations",
-       x = NULL) +
-  xlab(bquote(uq/m^3)) +
+       subtitle = "Average 24-hour PM2.5 and PM10 concentrations at eight locations") +
+  ylab(bquote(uq/m^3)) +
   facet_wrap(~location) +
   theme_bw(base_size = 12) 
 
 ```
 
-
-
 # References
 
-Authors, A. O., Kalina, M., Tilley, E., & Schöbitz, L. (2021). Manuscript - Malawi Hospital Air Quality Data - Notebook (Version 0.0.1) [Computer software]. https://github.com/Global-Health-Engineering/manuscript-hospital-air-quality
+Authors, A. O., Kalina, M., Tilley, E., & Schöbitz, L. (2021). Manuscript - Malawi Hospital Air Quality Data - Notebook (Version 0.0.1) [Computer software]. <https://github.com/Global-Health-Engineering/manuscript-hospital-air-quality>
