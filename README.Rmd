@@ -1,6 +1,8 @@
 ---
 title: "Application Exercise 2 - Air Quality Data"
 output: github_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -13,6 +15,7 @@ library(readr)
 library(ggplot2)
 library(dplyr)
 library(DT)
+library(lubridate)
 
 ```
 
@@ -20,7 +23,7 @@ This exercise is part of workshops, and undergraduate and graduate courses taugh
 
 # Data
 
-```{r}
+```{r read-data}
 
 # This code stores a link to the CSV resource on github as an Object named 'dat_link'
 # It does that using the so called assignment operator <- (keyboard shortcut: Alt + -)
@@ -47,13 +50,50 @@ vec_hospital_name <- dat_in %>%
 
 The data used in this exercise comes from a study implemented by researchers of the Global Health Engineering Group. The data is published openly on GitHub (Authors, 2021). Air quality data (PM2.5 and PM10) was collected in roughly 5-minute intervals from eight locations at one hospital in Malawi over the period of 3 months. The locations are `r knitr::combine_words(vec_hospital_name)`.
 
+The data has six variables (columns) and 200'000 rows (observations/measurements). The following table describes each variable:
+
+| variable_name | description                                              | data_type           | units |
+|---------------|----------------------------------------------------------|---------------------|-------|
+| date_time     | Date and time of measurement                             | POSIXct (date_time) | NA    |
+| id            | A running id for the different locations at the hospital | string              | NA    |
+| location      | A name for the location at the hospital                  | string              | NA    |
+| indicator     | Air quality parameteres                                  | string              | NA    |
+| value         | Air quality measurement                                  | numeric             | ug/m3 |
+
 # Data transformation
 
+```{r transform-summary}
+
+dat_in_sum_day <- dat_in %>% 
+  mutate(date = as_date(date_time)) %>% 
+  group_by(date, location, indicator) %>% 
+  summarise(min = min(value),
+            median = median(value),
+            mean = mean(value),
+            sd = sd(value),
+            max = max(value))
+
+
+```
+
+# Data visualisation
+
+```{r plot-daily-avg, fig.cap="Figure caption me!", fig.height=18, fig.width=10}
+dat_in_sum_day %>% 
+  ggplot(aes(x = date, y = mean, group = indicator, color = indicator)) +
+  geom_point(size = 0.6) +
+  geom_line() +
+  labs(title = "Hospital Air Quality",
+       subtitle = "Average 24-hour PM2.5 and PM10 concentrations at eight locations",
+       x = NULL) +
+  xlab(bquote(uq/m^3)) +
+  facet_wrap(~location) +
+  theme_bw(base_size = 12) 
+
+```
 
 
 
 # References
 
 Authors, A. O., Kalina, M., Tilley, E., & Schöbitz, L. (2021). Manuscript - Malawi Hospital Air Quality Data - Notebook (Version 0.0.1) [Computer software]. https://github.com/Global-Health-Engineering/manuscript-hospital-air-quality
-
-
