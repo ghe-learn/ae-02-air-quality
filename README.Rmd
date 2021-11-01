@@ -16,19 +16,28 @@ library(DT)
 
 ```
 
-This exercise is part of workshops, undergraduate and graduate courses taught by the Global Health Engineering Group at ETH Zurich. 
-
-
+This exercise is part of workshops, and undergraduate and graduate courses taught by the Global Health Engineering Group at ETH Zurich. 
 
 # Data
 
 ```{r}
 
+# This code stores a link to the CSV resource on github as an Object named 'dat_link'
+# It does that using the so called assignment operator <- (keyboard shortcut: Alt + -)
+# After running the code, the name shows up in the Environment pane in the top right of window 
+# It means that you can re-use it in another location
+
 dat_link <- "https://raw.githubusercontent.com/Global-Health-Engineering/manuscript-hospital-air-quality/main/data/intermediate/malawi-hospitals-air-quality.csv"
 
-dat_in <- read_csv(data_link)
+# This code uses a function named 'read_csv()' to read the data that is stored in the object dat_link
+# The data is then stored in a new object named 'dat_in' 
+# After running the code, the name shows up in the Environment pane in the top right of window 
 
-# Create a vector of hospital locations
+dat_in <- read_csv(dat_link)
+
+# This code will create a vector (we will worry about what that is another time)
+# The vector contains the values that sit in the variable location 
+# We will also worry about the %>% another time
 
 vec_hospital_name <- dat_in %>% 
   count(location) %>% 
@@ -36,5 +45,15 @@ vec_hospital_name <- dat_in %>%
 
 ```
 
-The data used in this exercise comes from a study implemented by [@Authors_Manuscript__Malawi_2021]. Air quality data (PM2.5 and PM10) was collected in roughly 5-minute intervals from eight locations at one hospital over the period of 3 months. The locations are `r knitr::combine_words(vec_hospital_name)`.
+The data used in this exercise comes from a study implemented by researchers of the Global Health Engineering Group. The data is published openly on GitHub (Authors, 2021). Air quality data (PM2.5 and PM10) was collected in roughly 5-minute intervals from eight locations at one hospital in Malawi over the period of 3 months. The locations are `r knitr::combine_words(vec_hospital_name)`.
+
+# Data transformation
+
+
+
+
+# References
+
+Authors, A. O., Kalina, M., Tilley, E., & Schöbitz, L. (2021). Manuscript - Malawi Hospital Air Quality Data - Notebook (Version 0.0.1) [Computer software]. https://github.com/Global-Health-Engineering/manuscript-hospital-air-quality
+
 
