@@ -1,8 +1,6 @@
 ---
 title: "Application Exercise 2 - Air Quality Data"
-output: github_document
-editor_options: 
-  chunk_output_type: console
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -11,7 +9,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 ```{r load-libraries, echo=FALSE}
 
-# This code loads some R Packages that do come with R
+# The following code loads some R Packages that do not come with R
 # These packages are extensions to the original R language
 
 library(readr)
@@ -27,30 +25,36 @@ This exercise is part of workshops, and undergraduate and graduate courses taugh
 
 ```{r read-data}
 
-# This code stores a link to the CSV resource on github as an Object named 'dat_link'
-# It does that using the so called assignment operator <- (keyboard shortcut: Alt + -)
-# After running the code, the name shows up in the Environment pane in the top right of window 
-# It means that you can re-use it in another location
+# The following code stores a link to the CSV resource on GitHub as an Object 
+# named 'dat_link' It does that using the so called assignment operator "<-" 
+# (keyboard shortcut: Alt + -)
+
+# After running the code, the name of the object (i.e. dat_link) shows up in 
+# the Environment pane in the top right of window. It means that you can 
+# re-use it in another location
 
 dat_link <- "https://raw.githubusercontent.com/Global-Health-Engineering/manuscript-hospital-air-quality/main/data/intermediate/malawi-hospitals-air-quality.csv"
 
-# This code uses a function named 'read_csv()' to read the data that is stored in the object dat_link
-# The data is then stored in a new object named 'dat_in' 
-# After running the code, the name shows up in the Environment pane in the top right of window 
+# The following codee uses a function calles 'read_csv()' to read the data from 
+# the link that is stored in the Object dat_link. The data is then stored in a 
+# new object named 'dat_in'. After running the code, the name shows up in the 
+# Environment pane in the top right of window 
 
 dat_in <- read_csv(dat_link)
 
-# This code will create a vector (we will worry about what that is another time)
+# This code will create a vector (we will discuss vectors later in the course)
 # The vector contains the values that sit in the variable location 
-# We will also worry about the %>% another time
+# We will also discuss the pipe '%>%' operator another time. 
 
 vec_hospital_name <- dat_in %>% 
   count(location) %>% 
-  pull(location)
+  pull(location) 
 
 ```
 
-The data used in this exercise comes from a study implemented by researchers of the Global Health Engineering Group. The data is published openly on GitHub (Authors, 2021). Air quality data (PM2.5 and PM10) was collected in roughly 5-minute intervals from eight locations at one hospital in Malawi over the period of 3 months. The locations are 6B, Administration, guardian, Lhouse, Lions, Malaria, MJC.
+The data used in this exercise comes from a study implemented by researchers of the Global Health Engineering Group. The data is published openly on GitHub (Chilunga et al., 2021). 
+
+Air quality data (PM2.5 and PM10) was collected in roughly 5-minute intervals from eight locations at one hospital in Malawi over the period of 3 months. The locations are 6B, Administration, guardian, Lhouse, Lions, Malaria, MJC.
 
 The data has six variables (columns) and 200'000 rows (observations/measurements). The following table describes each variable:
 
@@ -115,4 +119,4 @@ ggplot(data = dat_in_sum_day,
 
 # References
 
-Authors, A. O., Kalina, M., Tilley, E., & Schöbitz, L. (2021). Manuscript - Malawi Hospital Air Quality Data - Notebook (Version 0.0.1) [Computer software]. <https://github.com/Global-Health-Engineering/manuscript-hospital-air-quality>
+Chilunga, H., Kalina, M., Tilley, E., & Schöbitz, L. (2021). Manuscript - Malawi Hospital Air Quality Data - Notebook (Version 0.0.1) [Data set]. https://github.com/Global-Health-Engineering/manuscript-hospital-air-quality
